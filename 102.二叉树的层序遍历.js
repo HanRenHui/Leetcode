@@ -26,3 +26,30 @@ function createTree(arr) {
   }
   return root 
 }
+
+let root = createTree([3, 9, 20, null, null, 15, 7]) 
+
+
+var levelOrder = function(root) {
+  if (!root) return []
+  let rs = []  
+  const next = (parentArr) => {
+    if (!parentArr.length) return 
+    let tempArr = []
+    let valArr = []
+    while(parentArr.length) {
+      let curNode = parentArr.shift() 
+      curNode.left && tempArr.push(curNode.left)
+      curNode.right && tempArr.push(curNode.right)
+      valArr.push(curNode.val)
+    }
+    rs.push(valArr)
+    next(tempArr)
+  }
+  next([root])
+  return rs 
+};
+
+
+let rs = levelOrder(root)
+console.log(rs)
