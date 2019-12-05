@@ -25,3 +25,6 @@ var nextGreaterElements = function(nums) {
   return rs 
 
 };
+
+let a = require('a')
+if (a.defualt) a = a.defualt 
