@@ -1,29 +1,49 @@
-// 按先序
+
+
+/**
+ * Encodes a tree to a single string.
+ *
+ * @param {TreeNode} root
+ * @return {string}
+ */
 var serialize = function (root) {
   let arr = []
-  const next = (node) => {
-    if (!node) return arr.push('#')
+  const walk = (node) => {
+    if (!node) {
+      return arr.push('#')
+    }
     arr.push(node.val)
-    next(node.left)
-    next(node.right)
+    walk(node.left)
+    walk(node.right)
   }
-  next(root)
+  walk(root)
   return arr
-}
+};
 
+/**
+ * Decodes your encoded data to tree.
+ *
+ * @param {string} data
+ * @return {TreeNode}
+ */
 var deserialize = function (data) {
-  if (!data.length) return null
-  const next = (arr) => {
-    let cur = arr.shift()
-    if (cur !== '#') {
-      let curNode = new TreeNode(cur)
-      curNode.left = next(arr)
-      curNode.right = next(arr)
-      return curNode
+  if (!data.length) return []
+  const walk = (arr) => {
+    if (!arr.length) return
+    let cur = arr.shift() 
+    if (cur === '#') {
+      return null 
     } else {
-      return null
+      let node = new TreeNode(cur)
+      node.left = walk(arr)
+      node.right = walk(arr)
+      return node
     }
   }
-  return next(data)
-}
+  return walk(data)
+};
 
+/**
+ * Your functions will be called as such:
+ * deserialize(serialize(root));
+ */

@@ -1,14 +1,28 @@
-var buildTree = function(preorder, inorder) {
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} preorder
+ * @param {number[]} inorder
+ * @return {TreeNode}
+ */
+
+ 
+var buildTree = function (preorder, inorder) {
   if (!preorder.length || !inorder.length) return null
-  let root = preorder[0]
-  let rootinOrderIndex = inorder.indexOf(root)
-  let leftInOrder = inorder.slice(0, rootinOrderIndex)
-  let rightInOrder = inorder.slice(rootinOrderIndex+1)
-  let leftPreOrder = preorder.slice(1, rootinOrderIndex+1)
-  let rightPreOrder = preorder.slice(rootinOrderIndex+1)
+  let rootV = preorder[0]
+  let rootInorderIndex = inorder.indexOf(rootV)
+  let leftInorder = inorder.slice(0, rootInorderIndex)
+  let rightInorder = inorder.slice(rootInorderIndex + 1)
+  let leftPreOrder = preorder.slice(1, rootInorderIndex+1)
+  let rightPreOrder = preorder.slice(rootInorderIndex + 1)
   return {
-    val: root, 
-    left: buildTree(leftPreOrder, leftInOrder), 
-    right: buildTree(rightPreOrder, rightInOrder)
+    val: rootV,
+    left: buildTree(leftPreOrder, leftInorder),
+    right: buildTree(rightPreOrder, rightInorder)
   }
 };

@@ -1,31 +1,26 @@
-var zigzagLevelOrder = function (root) {
+// 还是按照层序遍历 只不过偶数层的时候 把tempV数组反转一下 push进rs数组
+
+var zigzagLevelOrder = (root) => {
   if (!root) return []
-  let rs = []
-  const next = (preLayer, flag) => {
-    if (!preLayer.length) return
-    let temp = []
-    let nextLayer = []
-    while (preLayer.length) {
-      let curNode = preLayer.pop()
-      let leftNode, rightNode
-      leftNode = curNode.left
-      rightNode = curNode.right
-      temp.unshift(curNode.val)
-
-      if (flag % 2 !== 0) {
-        [leftNode, rightNode] = [rightNode, leftNode]
-      }
-      if (leftNode) {
-        nextLayer.push(leftNode)
-      }
-      if (rightNode) {
-        nextLayer.push(rightNode)
-      }
-
+  let rs =[]
+  const walk = (parentArr, flag) => {
+    if (!parentArr.length) return false 
+    let tempParent = []
+    let tempV = []
+    for (let i = 0; i < parentArr.length; i++) {
+      let cur = parentArr[i]
+      tempV.push(cur.val)
+      let left = cur.left 
+      let right = cur.right 
+      if (left) tempParent.push(left)
+      if (right) tempParent.push(right)
     }
-    temp.length > 0 && rs.push(temp)
-    next(nextLayer, ++flag)
+    if (flag) {
+      tempV.reverse() 
+    }
+    rs.push(tempV)
+    walk(tempParent, !flag)
   }
-  next([root], 1)
-  return rs
-};
+  walk([root], false)
+  return rs 
+}
