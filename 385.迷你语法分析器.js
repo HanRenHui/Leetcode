@@ -40,32 +40,44 @@
  * @param {string} s
  * @return {NestedInteger}
  */
-var deserialize = function (s) {
-  if (s[0] != "[") return new NestedInteger(Number(s));
-  let temp = ''
-  let stack = []
-  let curNestedInteger = null
-  for (let i = 0, len = s.length; i < len; ++i) {
+
+ //  "[123,[456,[789]]]"
+var deserialize = function(s) {
+  let head = null 
+  const stack = []
+  let numStr = ''
+  for (let i = 0; i < s.length; i++) {
     let cur = s[i]
     if (cur === '[') {
-      if (curNestedInteger) stack.push(curNestedInteger)
-      let i = new NestedInteger()
-      curNestedInteger = i
+      stack.push('[')
+    } else if (/\d/.test(cur)) {
+      numStr += cur 
     } else if (cur === ']') {
-      if (temp.length) curNestedInteger.add(parseInt(temp))
-      let pre = curNestedInteger
-      temp = ''
-      if (stack.length) {
-        curNestedInteger = stack.pop()
-        curNestedInteger.add(pre)
+      if (numStr.length) {
+        stack.push(numStr)
+        numStr = ''
       }
-    } else if (/[0-9]/.test(cur)) {
-      temp += cur
+      let temp = []
+      while(stack[stack.length-1] !== '[') {
+        let top = stack.pop() 
+        temp.unshift(top)
+      }
+      stack.pop() 
+      let tempNi = new NestedInteger() 
+      head = tempNi 
+      temp.forEach(item => {
+        tempNi.add(item)
+      })
+      stack.push(tempNi)
     } else if (cur === ',') {
-      curNestedInteger.getList().add(parseInt(temp))
-      temp = ''
+      stack.push(numStr)
+      numStr = ''
     }
   }
-  return curNestedInteger
+  if (numStr.length) {
+    let tempNi = new NestedInteger() 
+    tempNi.setInteger(numStr)
+    return tempNi 
+  }
+  return head 
 };
-

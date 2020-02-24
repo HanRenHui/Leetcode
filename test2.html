@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style>
+    .row {
+      display: flex;
+    }
+
+    .col {
+      width: 40px;
+      height: 40px;
+      background-color: #ccc;
+      border: 1px solid #000;
+      text-align: center;
+      line-height: 40px;
+    }
+
+    .red {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #000;
+      background-color: #f00;
+      text-align: center;
+      line-height: 40px;
+    }
+  </style>
+  <body>
+    <div id="app">
+      <input v-model="x" type="text" name="" id="" /> X
+      <input type="text" v-model="y" name="" id="" />
+      <button @click="reset">Submit</button>
+      <div v-for="(item, x) in arr" class="row">
+        <div
+          v-for="(i, y) in item"
+          :class="i === 0 ? 'col' : 'red'"
+          @click="handleclick(x, y)"
+        >
+          {{i}}
+        </div>
+      </div>
+    </div>
+    <script src=" https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          arr: [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+          ],
+          x: 10,
+          y: 10
+        },
+        mounted() {
+          const { x, y } = this;
+          let data = [],
+            inner = [];
+          (data.length = x), (inner.length = y);
+          data.fill(inner.fill(0));
+          this.arr = data;
+        },
+        methods: {
+          handleclick(x, y) {
+            let originX = this.x,
+              originY = this.y;
+            const data = [],
+              needToChange = {
+                top: [x - 1, y],
+                right: [x, y + 1],
+                bottom: [x + 1, y],
+                left: [x, y - 1]
+              };
+            for (let i = 0, len = this.arr.length; i < len; i++) {
+              data.push([...this.arr[i]]);
+            }
+            for (let item in needToChange) {
+              let [x, y] = needToChange[item];
+              console.log(y, originY);
+              if (y > originY - 1) y = originY - 1;
+              data[x] && data[x][y]++;
+            }
+            data[x][y] ++;
+            this.arr = data;
+          },
+          reset() {
+            const { x, y } = this;
+            let data = [],
+              inner = [];
+
+            (data.length = x), (inner.length = y);
+            data.fill(inner.fill(0));
+
+            this.arr = data;
+          }
+        }
+      });
+
+      const pics = [[]];
+    </script>
+  </body>
+</html>
